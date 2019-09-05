@@ -28,6 +28,11 @@ resource "google_compute_region_instance_group_manager" "consul_server" {
   target_pools = var.instance_group_target_pools
   target_size  = var.cluster_size
 
+	# Wait for instances to be ready before this resource returns
+	# This allows for resources that depends on this instance group
+	# to be able to fetch informations about instances
+	wait_for_instances = true
+
   depends_on = [
     google_compute_instance_template.consul_server_public,
     google_compute_instance_template.consul_server_private,
